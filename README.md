@@ -1,169 +1,102 @@
-# ShopClues Men's Clothing Web Scraping & Data Analysis
+# ShopClues Men's Clothing — Web Scraping & Business Analysis
 
-A Python-based web scraping and data analysis project that collects publicly accessible product data from the **ShopClues Men's Clothing** section using Selenium.
+A beginner-friendly data analytics project that scrapes men's clothing product data from ShopClues, cleans it, explores it, and answers business questions using SQL.
 
-The scraped data is cleaned, transformed, analyzed, and visualized to identify useful product, pricing, discount, rating, review, and brand insights.
+## What this project does
 
-## 📌 Project Overview
+1. **Scrapes** product data from ShopClues using their AJAX endpoint (no browser automation needed).
+2. **Cleans** the raw data — prices, discounts, and URLs are converted into usable formats.
+3. **Explores** the data to find patterns in price, discount, rating, and shipping.
+4. **Analyzes** the data using SQL to answer real business questions.
+5. **Summarizes** everything into clear business recommendations.
 
-This project demonstrates a complete **Data Analyst workflow**:
-
-**Web Scraping → ETL → Data Cleaning → Feature Engineering → EDA → Data Visualization → SQL Analysis → Business Insights**
-
-## 🎯 Objectives
-
-* Scrape Men's Clothing product data using Selenium
-* Collect around 300+ unique product records
-* Handle dynamically loaded products
-* Clean and transform raw web data
-* Handle missing and duplicate values
-* Perform exploratory data analysis
-* Create meaningful visualizations
-* Perform SQL-based analysis
-* Generate business insights from the dataset
-
-## 🛠️ Technologies Used
-
-* **Python**
-* **Selenium**
-* **Pandas**
-* **NumPy**
-* **Matplotlib**
-* **Seaborn**
-* **SQLite / SQL**
-* **Jupyter Notebook**
-
-## 📊 Data Collected
-
-The project attempts to collect:
-
-* Product Name
-* Product URL
-* Category
-* Subcategory
-* Brand
-* Original Price
-* Selling Price
-* Discount
-* Rating
-* Review Count
-* Availability
-* Seller Name
-
-## 🔄 ETL Process
-
-### Extract
-
-Product information is collected from the ShopClues Men's Clothing webpage using Selenium WebDriver.
-
-### Transform
-
-The raw data is processed using Pandas:
-
-* Remove duplicate products
-* Clean product names
-* Convert prices into numeric values
-* Convert discounts into percentages
-* Convert ratings into numeric values
-* Clean review counts
-* Handle missing values
-* Create derived features
-
-### Load
-
-The cleaned dataset is stored as a CSV file and loaded into SQLite for SQL analysis.
-
-## 📈 Feature Engineering
-
-Additional features are created to improve analysis:
-
-* `discount_amount`
-* `calculated_discount_pct`
-* `price_category`
-* `rating_category`
-* `review_category`
-
-## 📊 Exploratory Data Analysis
-
-The project analyzes:
-
-* Product and brand distribution
-* Average and median selling price
-* Highest-priced products
-* Highest-discounted products
-* Most-reviewed products
-* Highest-rated products
-* Brand performance
-* Price and rating relationships
-* Discount and review relationships
-
-## 📉 Data Visualization
-
-Visualizations are created using Matplotlib and Seaborn, including:
-
-* Product count by brand
-* Selling price distribution
-* Rating distribution
-* Discount distribution
-* Top expensive products
-* Top discounted products
-* Top reviewed products
-* Price vs Rating
-* Discount vs Review Count
-
-## 🗄️ SQL Analysis
-
-SQLite is used to perform analytical queries such as:
-
-* Top 10 expensive products
-* Top 10 discounted products
-* Brand-wise product count
-* Brand-wise average rating
-* Products with rating above 4
-* Products with discount above 50%
-* Top reviewed products
-
-## 📁 Project Structure
-
-```text
-ShopClues-Web-Scraping/
-│
-├── ShopClues_Mens_Clothing_Selenium_ETL_700_FIXED.ipynb
-├── shopclues_mens_clothing_raw.csv
-├── shopclues_mens_clothing_final.csv
-├── shopclues_mens_clothing_quality_report.csv
-└── README.md
+```
+Scraping → Cleaning → EDA → Visualization → SQL → Validation → Business Insights
 ```
 
-## 🚀 How to Run
+## Why this project is useful
 
-### 1. Clone the repository
+Online store data (prices, discounts, ratings, shipping) can help a business understand:
+- How products are priced
+- Which products have the strongest promotions
+- Which products offer the best value for money
+- How shipping and ratings affect customer appeal
 
-```bash
-git clone <your-repository-url>
-cd ShopClues-Web-Scraping
-```
+## Tools used
 
-### 2. Install required libraries
+| Tool | Purpose |
+|---|---|
+| `requests` | Send requests to the ShopClues website |
+| `BeautifulSoup` | Read and extract data from HTML |
+| `pandas` | Store, clean, and analyze the data |
+| `re` | Clean numbers out of text (prices, discounts) |
+| `matplotlib` | Create simple charts |
+| `sqlite3` | Run SQL queries on the cleaned data |
 
-```bash
-pip install selenium pandas numpy matplotlib seaborn
-```
+## How the scraping works
 
-### 3. Open the notebook
+- ShopClues loads more products through a background (AJAX) request called `moreProducts`.
+- Instead of using a browser tool like Selenium, this project calls that same request directly using `requests`.
+- A session is created first (like visiting the page normally) so the requests look natural.
+- The scraper pages through results (increasing `page` and `start`) until **400+ unique products** are collected.
+- Duplicate products are automatically skipped using their product ID.
 
-```bash
-jupyter notebook
-```
+## How the data is cleaned
 
-Run the notebook cells sequentially.
+- **Prices**: text like `₹1,299` is converted to the number `1299`.
+- **Discounts**: text like `60% Off` is converted to the number `60`.
+- **URLs**: links starting with `//` are converted into full `https://` links.
+- **Missing values**: if a numeric value (price, discount, rating) is missing, it's filled in with the average of that column, so no products are dropped.
 
-## ⚠️ Important
+## What the analysis covers
 
-The website structure may change over time. Selenium selectors and scraping logic may need to be updated if ShopClues changes its webpage structure.
+- Cheapest and most expensive products
+- Products with the highest discounts
+- Free shipping vs. no shipping information
+- Price distribution and price spread (histogram and boxplot)
+- Rating distribution
 
-This project does not attempt to bypass CAPTCHA, authentication, Cloudflare, robots.txt, rate limits, or other anti-bot/access restrictions.
+### SQL questions answered
 
-## 👨‍💻 Skills Demonstrated
+- How many products are in the dataset?
+- What is the average price?
+- Which products are the most expensive?
+- Which products are the highest rated?
+- How does average price change by rating group?
+- Which products have above-average discounts?
+- Which products combine a good rating, a strong discount, and a reasonable price ("best value")?
 
-**Web Scraping | Python | Selenium | ETL | Data Cleaning | Pandas | NumPy | SQL | SQLite | EDA | Data Visualization | Business Analysis**
+## Key results
+
+- **408 unique products** collected, with no duplicates and no missing names or prices.
+- **Average price:** ₹888.85 | **Median price:** ₹899
+- **Price range:** ₹159 to ₹1,899
+- **Discounts** go as high as 89% on some products.
+- **354 of 408 products (about 87%)** offer free shipping.
+- Most product cards did not show a rating, so rating-based findings should be treated as directional rather than fully reliable.
+
+## Business takeaways
+
+- Focus pricing and marketing around the ₹159–₹1,899 range, since that's where most products sit.
+- Use high-discount products (up to 89% off) to drive flash sales or clearance campaigns.
+- Promote free shipping — it already covers the large majority of the catalog.
+- Highlight "best value" products (good rating + strong discount + fair price) with badges to catch shopper attention.
+- Improve how product ratings are captured on-site, since most items were missing this data.
+
+## Files in this project
+
+| File | Description |
+|---|---|
+| `ShopClues_project_analysis.ipynb` | The full notebook — scraping, cleaning, analysis, and SQL, in order |
+| `shopclues_mens_clothing_400plus.csv` | The cleaned dataset (generated when the notebook runs) |
+
+## How to run it
+
+1. Install the required libraries:
+   ```
+   pip install requests beautifulsoup4 pandas matplotlib lxml
+   ```
+2. Open `ShopClues_project_analysis.ipynb` in Jupyter Notebook or JupyterLab.
+3. Run the cells from top to bottom.
+
+That's it — the notebook will scrape, clean, analyze, and save the data automatically.
